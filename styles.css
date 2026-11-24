@@ -94,7 +94,7 @@ a {
 }
 
 .site {
-    overflow: hidden
+    overflow-x: hidden
 }
 
 .header {
@@ -167,7 +167,8 @@ a {
     align-items: center;
     text-decoration: none;
     display: flex;
-    flex-shrink: 0
+    flex-shrink: 0;
+    gap: 10px
 }
 
 .phone-icon {
@@ -184,6 +185,21 @@ a {
 
 .phone-icon i {
     font-size: 17px
+}
+
+.phone-link-copy {
+    display: flex;
+    flex-direction: column
+}
+
+.phone-link-copy small {
+    color: #7b8797;
+    font-size: 10px
+}
+
+.phone-link-copy strong {
+    color: var(--navy);
+    font-size: 14px
 }
 
 @keyframes phonePulse {
@@ -230,7 +246,8 @@ a {
 .hero-copy {
     color: var(--white);
     max-width: 690px;
-    padding-bottom: 92px
+    
+    /* padding-bottom: 2px */
 }
 
 .eyebrow {
@@ -275,7 +292,7 @@ a {
     border-radius: 8px;
     width: 100%;
     position: absolute;
-    top: calc(100% - 104px);
+    top: calc(100% - 20px);
     left: 0;
     right: 0;
     overflow: visible;
@@ -381,7 +398,7 @@ a {
 }
 
 .destinations {
-    padding-top: 160px;
+    padding-top: 200px;
     padding-bottom: 100px
 }
 
@@ -932,6 +949,7 @@ a {
     align-items: center;
     gap: 12px;
     padding: 0 22px;
+    margin-bottom: 20px;
     font-size: 13px;
     font-weight: 700;
     text-decoration: none;
@@ -1589,7 +1607,7 @@ a {
         display: flex
     }
 
-    .phone-link > span:last-child {
+    .phone-link-copy {
         display: none
     }
 
@@ -1621,7 +1639,7 @@ a {
     .hero {
         background-position: 58%;
         align-items: flex-start;
-        min-height: 590px
+        min-height: auto
     }
 
     .hero-overlay {
@@ -1630,7 +1648,8 @@ a {
 
     .hero-content {
         width: calc(100% - 40px);
-        padding-top: 70px
+        padding-top: 70px;
+        padding-bottom: 40px
     }
 
     .hero-copy {
@@ -1648,7 +1667,9 @@ a {
     }
 
     .search-card {
-        top: 330px
+        position: relative;
+        top: auto;
+        margin-top: 24px
     }
 
     .search-fields {
@@ -1670,7 +1691,7 @@ a {
     }
 
     .destinations {
-        padding-top: 250px;
+        padding-top: 60px;
         padding-bottom: 70px
     }
 
@@ -1800,7 +1821,7 @@ a {
 
 @media (width<=480px) {
     .hero {
-        min-height: 550px
+        min-height: auto
     }
 
     .hero-content {
@@ -1816,7 +1837,8 @@ a {
     }
 
     .search-card {
-        top: 310px
+        position: relative;
+        top: auto
     }
 
     .trip-tabs {
@@ -1841,7 +1863,7 @@ a {
     }
 
     .destinations {
-        padding-top: 220px
+        padding-top: 48px
     }
 
     .destination-grid {
@@ -2073,7 +2095,19 @@ a {
         gap: 0;
         margin: 0;
         padding: 8px 20px 20px;
-        z-index: 55
+        z-index: 55;
+        display: none;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        box-shadow: 0 8px 30px #081b331f
+    }
+
+    .nav.open {
+        display: flex
     }
 
     .nav>a,
@@ -2109,5 +2143,328 @@ a {
 
     .dropdown-menu a:last-child {
         border-bottom: 0
+    }
+}
+
+@media (min-width:761px) and (max-width:1050px) {
+    .header {
+        padding: 0 24px
+    }
+
+    .brand-mark {
+        width: 150px
+    }
+
+    .nav {
+        gap: 18px;
+        margin-right: 24px
+    }
+
+    .phone-link-copy {
+        display: none
+    }
+
+    .phone-link {
+        gap: 0
+    }
+}
+
+@media (max-width:760px) {
+    .header {
+        height: 68px;
+        min-height: 68px;
+        gap: 8px;
+        padding: 0 12px
+    }
+
+    .brand-mark {
+        width: 132px;
+        height: 44px
+    }
+
+    .phone-link {
+        margin-left: auto;
+        gap: 0
+    }
+
+    .phone-link-copy {
+        display: none
+    }
+
+    .phone-icon {
+        width: 42px;
+        height: 42px
+    }
+
+    .menu-button {
+        width: 42px;
+        height: 42px;
+        margin-left: 0
+    }
+}
+
+@media (max-width:360px) {
+    .header {
+        padding: 0 8px
+    }
+
+    .brand-mark {
+        width: 112px;
+        height: 40px
+    }
+
+    .phone-icon,
+    .menu-button {
+        width: 38px;
+        height: 38px
+    }
+}
+
+@media (max-width:760px) {
+    .section {
+        width: calc(100% - 32px)
+    }
+
+    .menu-button {
+        display: grid
+    }
+
+    .hero {
+        min-height: auto
+    }
+
+    .hero-content {
+        width: calc(100% - 32px);
+        padding-top: 60px;
+        padding-bottom: 40px
+    }
+
+    .hero h1 {
+        font-size: 38px;
+        line-height: 1.02;
+        margin: 10px 0 12px
+    }
+
+    .hero-lead {
+        max-width: 100%;
+        font-size: 14px;
+        margin: 10px 0
+    }
+
+    .search-card {
+        position: relative;
+        top: auto;
+        left: 0;
+        right: 0;
+        width: 100%
+    }
+
+    .search-fields {
+        grid-template-columns: 1fr 1fr
+    }
+
+    .field {
+        min-width: 0
+    }
+
+    .field strong {
+        overflow: hidden;
+        text-overflow: ellipsis
+    }
+
+    .destinations,
+    .how-section,
+    .promise-section,
+    .faq {
+        padding-top: 48px;
+        padding-bottom: 48px
+    }
+
+    .destinations {
+        padding-top: 48px
+    }
+
+    .section-heading,
+    .how-heading,
+    .faq-heading {
+        text-align: left
+    }
+
+    .section-heading h2,
+    .how-heading h2,
+    .about-section-copy h2,
+    .promise-copy h2,
+    .experience-copy h2,
+    .faq h2,
+    .offer h2,
+    .mid-cta h2 {
+        font-size: 30px;
+        line-height: 1.12;
+        letter-spacing: -1px
+    }
+
+    .destination-grid,
+    .how-steps,
+    .about-section-inner,
+    .promise-section,
+    .experience,
+    .faq {
+        grid-template-columns: 1fr
+    }
+
+    .destination-grid {
+        height: auto
+    }
+
+    .destination-card {
+        height: 260px
+    }
+
+    .how-steps article {
+        min-height: 190px
+    }
+
+    .about-section {
+        padding: 48px 0
+    }
+
+    .about-section-inner {
+        gap: 30px
+    }
+
+    .about-section-media,
+    .experience-image {
+        width: 100%;
+        height: 300px
+    }
+
+    .about-section-benefits,
+    .feature-list {
+        grid-template-columns: 1fr
+    }
+
+    .about-section-button,
+    .primary-button {
+        width: 100%;
+        justify-content: center
+    }
+
+    .mid-cta-inner {
+        width: calc(100% - 32px);
+        padding: 36px 0
+    }
+
+    .mid-cta-actions {
+        flex-direction: column;
+        align-items: stretch
+    }
+
+    .mid-cta-actions a {
+        width: 100%
+    }
+
+    .experience-badge {
+        width: 108px;
+        height: 108px;
+        right: 8px;
+        bottom: 8px
+    }
+
+    .offer {
+        min-height: 300px
+    }
+
+    .offer-content {
+        width: calc(100% - 32px)
+    }
+
+    .faq {
+        gap: 24px
+    }
+
+    .faq-item button {
+        height: auto;
+        min-height: 68px;
+        gap: 12px
+    }
+
+    .faq-item>p {
+        margin-right: 0
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr;
+        width: calc(100% - 32px)
+    }
+
+    .footer-about,
+    .footer-main>div,
+    .footer-bottom,
+    .footer-payment,
+    .footer-disclaimer {
+        width: 100%
+    }
+
+    .footer-bottom {
+        height: auto;
+        min-height: 68px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px
+    }
+}
+
+@media (max-width:480px) {
+    .hero-content {
+        padding-top: 18px
+    }
+
+    .eyebrow {
+        margin: 0 0 8px
+    }
+
+    .hero h1 {
+        font-size: 34px;
+        margin: 8px 0 10px
+    }
+
+    .search-card {
+        position: relative;
+        top: auto
+    }
+
+    .search-fields {
+        gap: 0
+    }
+
+    .field {
+        height: 54px;
+        padding: 0 7px
+    }
+
+    .destinations {
+        padding-top: 48px
+    }
+
+    .section-heading h2,
+    .how-heading h2,
+    .about-section-copy h2,
+    .promise-copy h2,
+    .experience-copy h2,
+    .faq h2,
+    .offer h2,
+    .mid-cta h2 {
+        font-size: 28px
+    }
+
+    .about-section-media,
+    .experience-image {
+        height: 280px
+    }
+
+    .about-section-years {
+        width: 104px;
+        height: 104px;
+        right: 6px
     }
 }

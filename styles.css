@@ -1999,7 +1999,8 @@ a {
 .dropdown-toggle {
     display: flex;
     align-items: center;
-    gap: 6px
+    gap: 6px;
+    cursor: pointer
 }
 
 .dropdown-arrow {

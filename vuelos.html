@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="site">
-    <!-- <header class="header">
+    <header class="header">
       <a class="brand" href="/"><img class="brand-mark" src="/public/logo.webp" alt="Mondiaco de los Viajes"></a>
       <nav class="nav" id="nav">
         <a href="/">Inicio</a>
@@ -29,7 +29,7 @@
       </nav>
       <a class="phone-link" href="tel:18883707045"><span class="phone-icon"><i class="fa-solid fa-phone"></i></span><span><small>Llámenos Ahora</small><strong>1-888-370-7045</strong></span></a>
       <button class="menu-button" id="menu" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
-    </header> -->
+    </header>
 
     <main>
       <section class="inner-page-hero">
@@ -97,7 +97,7 @@
       <section class="page-contact-band"><div><p class="section-kicker">RESERVE SU PRÓXIMO VUELO</p><h2>No espere más. Encuentre hoy las mejores ofertas.</h2></div><a href="tel:18883707045">Llamar 1-888-370-7045</a></section>
     </main>
 
-    <!-- <footer class="footer" id="contact">
+    <footer class="footer" id="contact">
       <div class="footer-main">
         <div class="footer-brand">
           <a class="brand brand-light" href="/"><img class="brand-mark" src="/public/logo.webp" alt="Mondiaco de los Viajes"></a>
@@ -109,13 +109,22 @@
       </div>
       <div class="footer-payment"><div class="payment-list"><img src="https://mondiacodelosviaje.com/image/footer/visa.png" alt="Visa"><img src="https://mondiacodelosviaje.com/image/footer/master-card.png" alt="Mastercard"><img src="https://mondiacodelosviaje.com/image/footer/paypal.png" alt="PayPal"></div></div>
       <div class="footer-disclaimer"><p>Copyright © 2026 Mondiacodelosviaje.com.</p></div>
-    </footer> -->
+    </footer>
   </div>
-  <script>document.getElementById('menu').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+  <script>const menuButton = document.getElementById('menu');
+    if (menuButton) {
+      menuButton.addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+    }
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
       toggle.addEventListener('click', event => {
+        const dropdown = toggle.parentElement;
         if (window.innerWidth <= 760) {
-          event.preventDefault(); toggle.parentElement.classList.toggle('open');
+          event.preventDefault();
+          dropdown.classList.toggle('open');
+          return;
         }
+        event.preventDefault();
+        dropdown.classList.toggle('open');
       });
     });
     const tripTabs = document.querySelectorAll('.flight-trip-tabs button');

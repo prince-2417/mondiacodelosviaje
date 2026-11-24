@@ -68,7 +68,7 @@
                     Nov</strong></span></label>
               <label class="field travelers"><span class="field-icon">♟</span><span><small>Pasajeros</small><strong>2
                     viajeros</strong></span><b>⌄</b></label>
-              <button class="search-button" type="submit">⌕ &nbsp; Buscar vuelos</button>
+              <button class="search-button" type="button" onclick="this.closest('form').dispatchEvent(new Event('submit'))">&#128269; &nbsp; Buscar vuelos</button>
             </div>
           </form>
         </div>
@@ -370,11 +370,13 @@
   </div>
   <script>
     document.getElementById('menu').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
-    document.querySelectorAll('.trip-tabs button').forEach(button => button.addEventListener('click', () => {
-      document.querySelectorAll('.trip-tabs button').forEach(tab => tab.classList.remove('active'));
-      button.classList.add('active');
-    }));
-    document.querySelectorAll('.faq-item button').forEach(button => button.addEventListener('click', () => button.parentElement.classList.toggle('open')));
+    document.querySelectorAll('.trip-tabs button').forEach(function(button) {
+      button.addEventListener('click', function() {
+        document.querySelectorAll('.trip-tabs button').forEach(function(tab) { tab.classList.remove('active'); });
+        this.classList.add('active');
+      });
+    });
+    document.querySelectorAll('.faq-item > button').forEach(button => button.addEventListener('click', () => button.parentElement.classList.toggle('open')));
     document.querySelector('.search-card').addEventListener('submit', event => event.preventDefault());
     document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
       toggle.addEventListener('click', event => {
@@ -388,17 +390,3 @@
 </body>
 
 </html>
- 
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>my-react-app</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
- 

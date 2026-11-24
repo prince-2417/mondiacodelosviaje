@@ -1448,7 +1448,8 @@ a {
     }
 
     .inner-page-actions {
-        flex-direction: column
+        flex-direction: row;
+        flex-wrap: wrap
     }
 
     .inner-page-details {

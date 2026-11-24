@@ -2405,6 +2405,13 @@ a {
         width: 100%
     }
 
+    .footer-payment,
+    .footer-disclaimer,
+    .footer-bottom {
+        padding-left: 5.5%;
+        padding-right: 5.5%
+    }
+
     .footer-bottom {
         height: auto;
         min-height: 68px;

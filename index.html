@@ -7,7 +7,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mondiaco de los Viajes | Vuelos y destinos</title>
   <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"></head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    .travelers { position: relative; }
+    .traveler-picker {
+      display: none; position: absolute; top: calc(100% + 8px); left: 0;
+      width: 240px; background: #fff; border: 1px solid #dde3e9;
+      border-radius: 8px; box-shadow: 0 12px 32px #081b3322;
+      padding: 16px; z-index: 200;
+    }
+    .traveler-picker.open { display: block; }
+    .tp-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .tp-name { font-size: 14px; font-weight: 600; color: var(--navy); }
+    .tp-counter { display: flex; align-items: center; gap: 12px; }
+    .tp-counter span { font-size: 15px; font-weight: 700; color: var(--navy); min-width: 18px; text-align: center; }
+    .tp-btn {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #081b33; color: #fff; border: 0;
+      font-size: 16px; font-weight: 700; cursor: pointer;
+      display: grid; place-items: center; line-height: 1;
+      transition: background .15s;
+    }
+    .tp-btn:hover { background: #102d50; }
+    .tp-btn:disabled { background: #dde3e9; color: #aab4c0; cursor: not-allowed; }
+    .tp-clase { margin-bottom: 14px; }
+    .tp-clase .tp-name { display: block; margin-bottom: 8px; }
+    .tp-clase select {
+      width: 100%; height: 38px; border: 1px solid #dde3e9; border-radius: 6px;
+      padding: 0 10px; font-size: 13px; color: var(--navy); background: #fff;
+      outline: none; cursor: pointer;
+    }
+    .tp-done {
+      width: 100%; height: 40px; background: #081b33; color: #fff;
+      border: 0; border-radius: 6px; font-size: 14px; font-weight: 800;
+      cursor: pointer; transition: background .15s;
+    }
+    .tp-done:hover { background: #102d50; }
+    @media (max-width: 760px) {
+      .traveler-picker { left: auto; right: 0; }
+    }
+  </style></head>
 
 <body>
   <div class="site">
@@ -84,12 +123,49 @@
                   <input type="date" id="returnDate">
                 </span>
               </label>
-              <label class="field travelers">
+              <div class="field travelers" id="travelerField" style="cursor:pointer">
                 <span class="field-icon"><i class="fa-solid fa-user"></i></span>
-                <span><small>Pasajeros</small><strong>1 viajero</strong></span>
-                <b>⌄</b>
-              </label>
-              <button class="search-button" type="submit"><i class="fa-solid fa-magnifying-glass"></i> &nbsp; Buscar vuelos</button>
+                <span><small>Pasajeros</small><strong id="travelerLabel">1 pasajero | Económica</strong></span>
+                <b style="font-size:11px;color:#9aa5b3">⌄</b>
+                <!-- Picker popup -->
+                <div class="traveler-picker" id="travelerPicker">
+                  <div class="tp-row">
+                    <span class="tp-name">Adultos</span>
+                    <div class="tp-counter">
+                      <button type="button" class="tp-btn" data-target="adults" data-action="-">−</button>
+                      <span id="adultsVal">1</span>
+                      <button type="button" class="tp-btn" data-target="adults" data-action="+">+</button>
+                    </div>
+                  </div>
+                  <div class="tp-row">
+                    <span class="tp-name">Niños</span>
+                    <div class="tp-counter">
+                      <button type="button" class="tp-btn" data-target="children" data-action="-">−</button>
+                      <span id="childrenVal">0</span>
+                      <button type="button" class="tp-btn" data-target="children" data-action="+">+</button>
+                    </div>
+                  </div>
+                  <div class="tp-row">
+                    <span class="tp-name">Bebés</span>
+                    <div class="tp-counter">
+                      <button type="button" class="tp-btn" data-target="babies" data-action="-">−</button>
+                      <span id="babiesVal">0</span>
+                      <button type="button" class="tp-btn" data-target="babies" data-action="+">+</button>
+                    </div>
+                  </div>
+                  <div class="tp-clase">
+                    <span class="tp-name">Clase</span>
+                    <select id="cabinClass">
+                      <option value="Económica">Económica</option>
+                      <option value="Premium Económica">Premium Económica</option>
+                      <option value="Business">Business</option>
+                      <option value="Primera">Primera</option>
+                    </select>
+                  </div>
+                  <button type="button" class="tp-done" id="travelerDone">Listo</button>
+                </div>
+              </div>
+              <button class="search-button" type="submit" style="justify-content:center"><i class="fa-solid fa-magnifying-glass"></i> &nbsp; Buscar vuelos</button>
             </div>
             <div id="flightResults" class="flight-results"></div>
           </form>
@@ -346,7 +422,7 @@
             <a href="/c%C3%B3mo-reservamos-y-emitimos-billetes-de-avi%C3%B3n">Cómo Reservamos y Emitimos Billetes De Avión</a>
             <a href="/informaci%C3%B3n-sobre-pagos-y-transparencia">Información Sobre pagos y transparencia</a>
             <a href="/descargo-de-responsabilidad">Descargo de Responsabilidad</a>
-            <a href="/contactarnos">Contactarnos</a>
+            <a href=/contactarnos">Contactarnos</a>
           </div>
         </div>
         <div>
@@ -530,6 +606,35 @@
     setupAirport('originInput', 'originDropdown', 'originCode');
     setupAirport('destInput', 'destDropdown', 'destCode');
 
+    // Open the native calendar from the complete date field
+    document.querySelectorAll('input[type="date"]').forEach(input => {
+      const field = input.closest('.field');
+      if (field) {
+        field.style.cursor = 'pointer';
+        field.addEventListener('click', () => {
+          if (typeof input.showPicker === 'function') input.showPicker();
+          else input.focus();
+        });
+      }
+    });
+
+    const departDate = document.getElementById('departDate');
+    const returnDate = document.getElementById('returnDate');
+    if (departDate && returnDate) {
+      const today = new Date();
+      const todayValue = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, '0'),
+        String(today.getDate()).padStart(2, '0')
+      ].join('-');
+      departDate.min = todayValue;
+      returnDate.min = todayValue;
+      departDate.addEventListener('change', () => {
+        returnDate.min = departDate.value || todayValue;
+        if (returnDate.value && returnDate.value < returnDate.min) returnDate.value = '';
+      });
+    }
+
     // Flight search
     document.getElementById('searchForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -552,6 +657,39 @@
         }
       });
     });
+
+    // Traveler picker
+    const counts = { adults: 1, children: 0, babies: 0 };
+    function updateTravelerLabel() {
+      const total = counts.adults + counts.children + counts.babies;
+      const cabin = document.getElementById('cabinClass').value;
+      document.getElementById('travelerLabel').textContent = total + ' pasajero' + (total > 1 ? 's' : '') + ' | ' + cabin;
+    }
+    document.getElementById('travelerField').addEventListener('click', function(e) {
+      if (e.target.closest('.traveler-picker')) return;
+      document.getElementById('travelerPicker').classList.toggle('open');
+    });
+    document.getElementById('travelerDone').addEventListener('click', function() {
+      document.getElementById('travelerPicker').classList.remove('open');
+    });
+    document.querySelectorAll('.tp-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const target = this.dataset.target;
+        const action = this.dataset.action;
+        const min = target === 'adults' ? 1 : 0;
+        if (action === '+') counts[target]++;
+        else if (counts[target] > min) counts[target]--;
+        document.getElementById(target + 'Val').textContent = counts[target];
+        updateTravelerLabel();
+      });
+    });
+    document.getElementById('cabinClass').addEventListener('change', updateTravelerLabel);
+    document.addEventListener('click', function(e) {
+      if (!document.getElementById('travelerField').contains(e.target)) {
+        document.getElementById('travelerPicker').classList.remove('open');
+      }
+    });
+    updateTravelerLabel();
   </script>
 </body>
 </html>

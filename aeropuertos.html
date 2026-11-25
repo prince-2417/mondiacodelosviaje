@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aeropuertos | Mondiaco de los Viajes</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    .airports-hero {
+      background: linear-gradient(90deg,#081b33ee,#081b3399),
+        url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=85) 50% 50%/cover no-repeat;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      color: #fff
+    }
+    .airports-search-bar {
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+      height: 56px;
+      max-width: 560px;
+      margin-top: 28px;
+      box-shadow: 0 8px 28px #081b3330
+    }
+    .airports-search-bar i { color: #9aa5b3; font-size: 16px }
+    .airports-search-bar input {
+      border: 0; outline: none; font-size: 15px;
+      color: var(--navy); width: 100%; background: transparent
+    }
+    .airports-page { padding: 56px 0 80px }
+    .region-tabs {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px
+    }
+    .region-tab {
+      border: 1px solid #dde3e9; border-radius: 20px;
+      padding: 7px 18px; font-size: 13px; font-weight: 700;
+      cursor: pointer; background: #fff; color: var(--navy);
+      transition: all .2s
+    }
+    .region-tab.active, .region-tab:hover {
+      background: var(--navy); color: #fff; border-color: var(--navy)
+    }
+    .airports-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px
+    }
+    .airport-card {
+      background: #fff;
+      border: 1px solid #dde3e9;
+      border-radius: 6px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: box-shadow .2s, border-color .2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit
+    }
+    .airport-card:hover {
+      box-shadow: 0 8px 24px #081b3314;
+      border-color: var(--gold)
+    }
+    .airport-code {
+      font-family: Manrope, sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--gold)
+    }
+    .airport-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.4
+    }
+    .airport-city {
+      font-size: 12px;
+      color: #8490a0;
+      display: flex;
+      align-items: center;
+      gap: 5px
+    }
+    .airport-country {
+      font-size: 11px;
+      color: #b0bac6;
+      margin-top: 2px
+    }
+    .results-count {
+      font-size: 13px;
+      color: #66758a;
+      margin-bottom: 18px
+    }
+    .no-airports {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 48px;
+      color: #8490a0
+    }
+    .region-heading {
+      font-family: Manrope, sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 32px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--gold);
+      display: inline-block
+    }
+    @media (max-width: 1024px) { .airports-grid { grid-template-columns: repeat(3,1fr) } }
+    @media (max-width: 760px) {
+      .airports-grid { grid-template-columns: repeat(2,1fr) }
+      .region-tabs { gap: 6px }
+      .region-tab { padding: 6px 12px; font-size: 12px }
+    }
+    @media (max-width: 480px) { .airports-grid { grid-template-columns: 1fr 1fr } }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header class="header">
+      <a class="brand" href="/"><img class="brand-mark" src="./public/logo.webp" alt="Mondiaco de los Viajes"></a>
+      <nav class="nav" id="nav">
+        <a href="/">Inicio</a>
+        <div class="nav-dropdown">
+          <a href="/sobre-nosotros" class="dropdown-toggle">Sobre Nosotros <span class="dropdown-arrow">▼</span></a>
+          <div class="dropdown-menu">
+            <a href="/sobre-nosotros">Sobre Nosotros</a>
+            <a href="/información-legal-de-negocios">Información Legal De Negocios</a>
+            <a href="/cómo-reservamos-y-emitimos-billetes-de-avión">Cómo Reservamos y Emitimos Billetes De Avión</a>
+            <a href="/información-sobre-pagos-y-transparencia">Información Sobre pagos y transparencia</a>
+            <a href="/descargo-de-responsabilidad">Descargo de Responsabilidad</a>
+          </div>
+        </div>
+        <a href="/vuelos">Vuelos</a>
+        <a href="/líneas-de-cruceros">Líneas De Cruceros</a>
+        <a href="/contactarnos">Contactarnos</a>
+      </nav>
+      <a class="phone-link" href="tel:18883707045"><span class="phone-icon"><i class="fa-solid fa-phone"></i></span><span class="phone-link-copy"><small>Llámenos Ahora</small><strong>1-888-370-7045</strong></span></a>
+      <button class="menu-button" id="menu">☰</button>
+    </header>
+
+    <div class="airports-hero">
+      <div class="inner-page-content">
+        <p class="section-kicker">DIRECTORIO GLOBAL</p>
+        <h1 style="font-size:clamp(36px,5vw,58px);margin:8px 0 0">Aeropuertos del Mundo</h1>
+        <p style="color:#c9d3e0;max-width:520px;margin:12px 0 0;font-size:16px">Encuentra información de aeropuertos por código IATA, ciudad o país.</p>
+        <div class="airports-search-bar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="airportSearch" placeholder="Buscar por código, ciudad o nombre... (ej: JFK, Madrid, London)">
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="section airports-page">
+        <div class="region-tabs" id="regionTabs">
+          <button class="region-tab active" data-region="all">Todos</button>
+          <button class="region-tab" data-region="North America">Norteamérica</button>
+          <button class="region-tab" data-region="Europe">Europa</button>
+          <button class="region-tab" data-region="Asia">Asia</button>
+          <button class="region-tab" data-region="Middle East">Medio Oriente</button>
+          <button class="region-tab" data-region="Latin America">Latinoamérica</button>
+          <button class="region-tab" data-region="Oceania">Oceanía</button>
+          <button class="region-tab" data-region="Africa">África</button>
+        </div>
+        <div class="results-count" id="resultsCount"></div>
+        <div class="airports-grid" id="airportsGrid"></div>
+      </div>
+    </main>
+
+    <footer class="footer" id="contact">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a class="brand brand-light" href="/"><img class="brand-mark" src="public/logo-white.webp" alt="Mondiaco de los Viajes"></a>
+          <p>Descubre ofertas de vuelos económicas con Mondiaco de los Viajes.</p>
+          <div class="footer-contact-list">
+            <div><span>Atención telefónica</span><a href="tel:18883707045">1-888-370-7045</a></div>
+            <div><span>Escríbenos</span><a href="mailto:support@mondiacodelosviajes.com">support@mondiacodelosviajes.com</a></div>
+          </div>
+        </div>
+        <div>
+          <h3>ENLACES IMPORTANTES</h3>
+          <div class="footer-links">
+            <a href="/vuelos">Vuelos</a>
+            <a href="/aeropuertos">Aeropuertos</a>
+            <a href="/contactarnos">Contactarnos</a>
+          </div>
+        </div>
+        <div>
+          <h3>INFORMACIÓN LEGAL</h3>
+          <div class="footer-links">
+            <a href="/términos-y-condiciones">Términos y Condiciones</a>
+            <a href="/política-de-privacidad">Política De Privacidad</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-disclaimer"><p>Copyright © 2026 Mondiacodelosviaje.com.</p></div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('menu').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+    document.querySelectorAll('.dropdown-toggle').forEach(t => t.addEventListener('click', e => { if (window.innerWidth <= 760) { e.preventDefault(); t.parentElement.classList.toggle('open'); } }));
+
+    const airports = [
+      // North America - USA
+      {id:'JFK',name:'John F. Kennedy International',city:'New York',country:'United States',region:'North America'},
+      {id:'LGA',name:'LaGuardia Airport',city:'New York',country:'United States',region:'North America'},
+      {id:'EWR',name:'Newark Liberty International',city:'New York',country:'United States',region:'North America'},
+      {id:'LAX',name:'Los Angeles International',city:'Los Angeles',country:'United States',region:'North America'},
+      {id:'ORD',name:"O'Hare International",city:'Chicago',country:'United States',region:'North America'},
+      {id:'MDW',name:'Midway International',city:'Chicago',country:'United States',region:'North America'},
+      {id:'ATL',name:'Hartsfield-Jackson Atlanta International',city:'Atlanta',country:'United States',region:'North America'},
+      {id:'DFW',name:'Dallas/Fort Worth International',city:'Dallas',country:'United States',region:'North America'},
+      {id:'DEN',name:'Denver International',city:'Denver',country:'United States',region:'North America'},
+      {id:'SFO',name:'San Francisco International',city:'San Francisco',country:'United States',region:'North America'},
+      {id:'SEA',name:'Seattle-Tacoma International',city:'Seattle',country:'United States',region:'North America'},
+      {id:'MIA',name:'Miami International',city:'Miami',country:'United States',region:'North America'},
+      {id:'BOS',name:'Logan International',city:'Boston',country:'United States',region:'North America'},
+      {id:'LAS',name:'Harry Reid International',city:'Las Vegas',country:'United States',region:'North America'},
+      {id:'PHX',name:'Phoenix Sky Harbor International',city:'Phoenix',country:'United States',region:'North America'},
+      {id:'IAH',name:'George Bush Intercontinental',city:'Houston',country:'United States',region:'North America'},
+      {id:'HOU',name:'William P. Hobby Airport',city:'Houston',country:'United States',region:'North America'},
+      {id:'MSP',name:'Minneapolis-Saint Paul International',city:'Minneapolis',country:'United States',region:'North America'},
+      {id:'DTW',name:'Detroit Metropolitan Wayne County',city:'Detroit',country:'United States',region:'North America'},
+      {id:'PHL',name:'Philadelphia International',city:'Philadelphia',country:'United States',region:'North America'},
+      {id:'CLT',name:'Charlotte Douglas International',city:'Charlotte',country:'United States',region:'North America'},
+      {id:'MCO',name:'Orlando International',city:'Orlando',country:'United States',region:'North America'},
+      {id:'BWI',name:'Baltimore/Washington International',city:'Baltimore',country:'United States',region:'North America'},
+      {id:'DCA',name:'Ronald Reagan Washington National',city:'Washington',country:'United States',region:'North America'},
+      {id:'IAD',name:'Washington Dulles International',city:'Washington',country:'United States',region:'North America'},
+      {id:'SAN',name:'San Diego International',city:'San Diego',country:'United States',region:'North America'},
+      {id:'TPA',name:'Tampa International',city:'Tampa',country:'United States',region:'North America'},
+      {id:'PDX',name:'Portland International',city:'Portland',country:'United States',region:'North America'},
+      {id:'STL',name:'St. Louis Lambert International',city:'St. Louis',country:'United States',region:'North America'},
+      {id:'BNA',name:'Nashville International',city:'Nashville',country:'United States',region:'North America'},
+      {id:'AUS',name:'Austin-Bergstrom International',city:'Austin',country:'United States',region:'North America'},
+      {id:'MCI',name:'Kansas City International',city:'Kansas City',country:'United States',region:'North America'},
+      {id:'RDU',name:'Raleigh-Durham International',city:'Raleigh',country:'United States',region:'North America'},
+      {id:'SLC',name:'Salt Lake City International',city:'Salt Lake City',country:'United States',region:'North America'},
+      {id:'HNL',name:'Daniel K. Inouye International',city:'Honolulu',country:'United States',region:'North America'},
+      {id:'ANC',name:'Ted Stevens Anchorage International',city:'Anchorage',country:'United States',region:'North America'},
+      {id:'SMF',name:'Sacramento International',city:'Sacramento',country:'United States',region:'North America'},
+      {id:'SJC',name:'Norman Y. Mineta San Jose International',city:'San Jose',country:'United States',region:'North America'},
+      {id:'OAK',name:'Oakland International',city:'Oakland',country:'United States',region:'North America'},
+      {id:'MEM',name:'Memphis International',city:'Memphis',country:'United States',region:'North America'},
+      {id:'PIT',name:'Pittsburgh International',city:'Pittsburgh',country:'United States',region:'North America'},
+      {id:'CLE',name:'Cleveland Hopkins International',city:'Cleveland',country:'United States',region:'North America'},
+      {id:'IND',name:'Indianapolis International',city:'Indianapolis',country:'United States',region:'North America'},
+      // Canada
+      {id:'YYZ',name:'Toronto Pearson International',city:'Toronto',country:'Canada',region:'North America'},
+      {id:'YVR',name:'Vancouver International Airport',city:'Vancouver',country:'Canada',region:'North America'},
+      {id:'YUL',name:'Montreal-Trudeau International',city:'Montreal',country:'Canada',region:'North America'},
+      {id:'YYC',name:'Calgary International Airport',city:'Calgary',country:'Canada',region:'North America'},
+      // Mexico
+      {id:'MEX',name:'Mexico City International Airport',city:'Mexico City',country:'Mexico',region:'North America'},
+      {id:'CUN',name:'Cancun International Airport',city:'Cancun',country:'Mexico',region:'North America'},
+      {id:'GDL',name:'Miguel Hidalgo y Costilla International',city:'Guadalajara',country:'Mexico',region:'North America'},
+      // Europe
+      {id:'LHR',name:'Heathrow Airport',city:'London',country:'United Kingdom',region:'Europe'},
+      {id:'LGW',name:'Gatwick Airport',city:'London',country:'United Kingdom',region:'Europe'},
+      {id:'STN',name:'Stansted Airport',city:'London',country:'United Kingdom',region:'Europe'},
+      {id:'CDG',name:'Charles de Gaulle Airport',city:'Paris',country:'France',region:'Europe'},
+      {id:'ORY',name:'Orly Airport',city:'Paris',country:'France',region:'Europe'},
+      {id:'AMS',name:'Amsterdam Airport Schiphol',city:'Amsterdam',country:'Netherlands',region:'Europe'},
+      {id:'FRA',name:'Frankfurt Airport',city:'Frankfurt',country:'Germany',region:'Europe'},
+      {id:'MUC',name:'Munich Airport',city:'Munich',country:'Germany',region:'Europe'},
+      {id:'BER',name:'Berlin Brandenburg Airport',city:'Berlin',country:'Germany',region:'Europe'},
+      {id:'MAD',name:'Adolfo Suarez Madrid-Barajas',city:'Madrid',country:'Spain',region:'Europe'},
+      {id:'BCN',name:'Barcelona-El Prat Airport',city:'Barcelona',country:'Spain',region:'Europe'},
+      {id:'FCO',name:'Leonardo da Vinci International',city:'Rome',country:'Italy',region:'Europe'},
+      {id:'MXP',name:'Milan Malpensa Airport',city:'Milan',country:'Italy',region:'Europe'},
+      {id:'ZRH',name:'Zurich Airport',city:'Zurich',country:'Switzerland',region:'Europe'},
+      {id:'VIE',name:'Vienna International Airport',city:'Vienna',country:'Austria',region:'Europe'},
+      {id:'BRU',name:'Brussels Airport',city:'Brussels',country:'Belgium',region:'Europe'},
+      {id:'CPH',name:'Copenhagen Airport',city:'Copenhagen',country:'Denmark',region:'Europe'},
+      {id:'ARN',name:'Stockholm Arlanda Airport',city:'Stockholm',country:'Sweden',region:'Europe'},
+      {id:'OSL',name:'Oslo Gardermoen Airport',city:'Oslo',country:'Norway',region:'Europe'},
+      {id:'HEL',name:'Helsinki-Vantaa Airport',city:'Helsinki',country:'Finland',region:'Europe'},
+      {id:'LIS',name:'Humberto Delgado Airport',city:'Lisbon',country:'Portugal',region:'Europe'},
+      {id:'ATH',name:'Athens International Airport',city:'Athens',country:'Greece',region:'Europe'},
+      {id:'IST',name:'Istanbul Airport',city:'Istanbul',country:'Turkey',region:'Europe'},
+      {id:'SVO',name:'Sheremetyevo International Airport',city:'Moscow',country:'Russia',region:'Europe'},
+      {id:'WAW',name:'Warsaw Chopin Airport',city:'Warsaw',country:'Poland',region:'Europe'},
+      {id:'PRG',name:'Vaclav Havel Airport Prague',city:'Prague',country:'Czech Republic',region:'Europe'},
+      {id:'BUD',name:'Budapest Ferenc Liszt International',city:'Budapest',country:'Hungary',region:'Europe'},
+      // Asia
+      {id:'DXB',name:'Dubai International Airport',city:'Dubai',country:'UAE',region:'Middle East'},
+      {id:'AUH',name:'Abu Dhabi International Airport',city:'Abu Dhabi',country:'UAE',region:'Middle East'},
+      {id:'DOH',name:'Hamad International Airport',city:'Doha',country:'Qatar',region:'Middle East'},
+      {id:'RUH',name:'King Khalid International Airport',city:'Riyadh',country:'Saudi Arabia',region:'Middle East'},
+      {id:'JED',name:'King Abdulaziz International Airport',city:'Jeddah',country:'Saudi Arabia',region:'Middle East'},
+      {id:'TLV',name:'Ben Gurion International Airport',city:'Tel Aviv',country:'Israel',region:'Middle East'},
+      {id:'SIN',name:'Singapore Changi Airport',city:'Singapore',country:'Singapore',region:'Asia'},
+      {id:'HKG',name:'Hong Kong International Airport',city:'Hong Kong',country:'China',region:'Asia'},
+      {id:'NRT',name:'Narita International Airport',city:'Tokyo',country:'Japan',region:'Asia'},
+      {id:'HND',name:'Haneda Airport',city:'Tokyo',country:'Japan',region:'Asia'},
+      {id:'KIX',name:'Kansai International Airport',city:'Osaka',country:'Japan',region:'Asia'},
+      {id:'ICN',name:'Incheon International Airport',city:'Seoul',country:'South Korea',region:'Asia'},
+      {id:'PEK',name:'Beijing Capital International',city:'Beijing',country:'China',region:'Asia'},
+      {id:'PKX',name:'Beijing Daxing International',city:'Beijing',country:'China',region:'Asia'},
+      {id:'PVG',name:'Shanghai Pudong International',city:'Shanghai',country:'China',region:'Asia'},
+      {id:'SHA',name:'Shanghai Hongqiao International',city:'Shanghai',country:'China',region:'Asia'},
+      {id:'CAN',name:'Guangzhou Baiyun International',city:'Guangzhou',country:'China',region:'Asia'},
+      {id:'BOM',name:'Chhatrapati Shivaji Maharaj International',city:'Mumbai',country:'India',region:'Asia'},
+      {id:'DEL',name:'Indira Gandhi International Airport',city:'Delhi',country:'India',region:'Asia'},
+      {id:'BLR',name:'Kempegowda International Airport',city:'Bangalore',country:'India',region:'Asia'},
+      {id:'BKK',name:'Suvarnabhumi Airport',city:'Bangkok',country:'Thailand',region:'Asia'},
+      {id:'DMK',name:'Don Mueang International Airport',city:'Bangkok',country:'Thailand',region:'Asia'},
+      {id:'KUL',name:'Kuala Lumpur International Airport',city:'Kuala Lumpur',country:'Malaysia',region:'Asia'},
+      {id:'CGK',name:'Soekarno-Hatta International Airport',city:'Jakarta',country:'Indonesia',region:'Asia'},
+      {id:'MNL',name:'Ninoy Aquino International Airport',city:'Manila',country:'Philippines',region:'Asia'},
+      {id:'SGN',name:'Tan Son Nhat International Airport',city:'Ho Chi Minh City',country:'Vietnam',region:'Asia'},
+      {id:'HAN',name:'Noi Bai International Airport',city:'Hanoi',country:'Vietnam',region:'Asia'},
+      // Latin America
+      {id:'GRU',name:'Sao Paulo-Guarulhos International',city:'Sao Paulo',country:'Brazil',region:'Latin America'},
+      {id:'GIG',name:'Rio de Janeiro-Galeao International',city:'Rio de Janeiro',country:'Brazil',region:'Latin America'},
+      {id:'EZE',name:'Ministro Pistarini International',city:'Buenos Aires',country:'Argentina',region:'Latin America'},
+      {id:'AEP',name:'Jorge Newbery Airfield',city:'Buenos Aires',country:'Argentina',region:'Latin America'},
+      {id:'BOG',name:'El Dorado International Airport',city:'Bogota',country:'Colombia',region:'Latin America'},
+      {id:'LIM',name:'Jorge Chavez International Airport',city:'Lima',country:'Peru',region:'Latin America'},
+      {id:'SCL',name:'Arturo Merino Benitez International',city:'Santiago',country:'Chile',region:'Latin America'},
+      {id:'UIO',name:'Mariscal Sucre International Airport',city:'Quito',country:'Ecuador',region:'Latin America'},
+      {id:'GYE',name:'Jose Joaquin de Olmedo International',city:'Guayaquil',country:'Ecuador',region:'Latin America'},
+      {id:'PTY',name:'Tocumen International Airport',city:'Panama City',country:'Panama',region:'Latin America'},
+      {id:'SJO',name:'Juan Santamaria International Airport',city:'San Jose',country:'Costa Rica',region:'Latin America'},
+      {id:'HAV',name:'Jose Marti International Airport',city:'Havana',country:'Cuba',region:'Latin America'},
+      {id:'SDQ',name:'Las Americas International Airport',city:'Santo Domingo',country:'Dominican Republic',region:'Latin America'},
+      {id:'SJU',name:'Luis Munoz Marin International',city:'San Juan',country:'Puerto Rico',region:'Latin America'},
+      // Oceania
+      {id:'SYD',name:'Sydney Kingsford Smith Airport',city:'Sydney',country:'Australia',region:'Oceania'},
+      {id:'MEL',name:'Melbourne Airport',city:'Melbourne',country:'Australia',region:'Oceania'},
+      {id:'BNE',name:'Brisbane Airport',city:'Brisbane',country:'Australia',region:'Oceania'},
+      {id:'PER',name:'Perth Airport',city:'Perth',country:'Australia',region:'Oceania'},
+      {id:'AKL',name:'Auckland Airport',city:'Auckland',country:'New Zealand',region:'Oceania'},
+      {id:'CHC',name:'Christchurch Airport',city:'Christchurch',country:'New Zealand',region:'Oceania'},
+      // Africa
+      {id:'JNB',name:'O.R. Tambo International Airport',city:'Johannesburg',country:'South Africa',region:'Africa'},
+      {id:'CPT',name:'Cape Town International Airport',city:'Cape Town',country:'South Africa',region:'Africa'},
+      {id:'CAI',name:'Cairo International Airport',city:'Cairo',country:'Egypt',region:'Africa'},
+      {id:'NBO',name:'Jomo Kenyatta International',city:'Nairobi',country:'Kenya',region:'Africa'},
+      {id:'ADD',name:'Addis Ababa Bole International',city:'Addis Ababa',country:'Ethiopia',region:'Africa'},
+      {id:'LOS',name:'Murtala Muhammed International',city:'Lagos',country:'Nigeria',region:'Africa'},
+      {id:'CMN',name:'Mohammed V International Airport',city:'Casablanca',country:'Morocco',region:'Africa'},
+      {id:'TUN',name:'Tunis-Carthage International Airport',city:'Tunis',country:'Tunisia',region:'Africa'},
+    ];
+
+    let currentRegion = 'all';
+    let searchQuery = '';
+
+    function getFiltered() {
+      return airports.filter(a => {
+        const matchRegion = currentRegion === 'all' || a.region === currentRegion;
+        const q = searchQuery.toLowerCase();
+        const matchSearch = !q ||
+          a.id.toLowerCase().includes(q) ||
+          a.name.toLowerCase().includes(q) ||
+          a.city.toLowerCase().includes(q) ||
+          a.country.toLowerCase().includes(q);
+        return matchRegion && matchSearch;
+      });
+    }
+
+    function render() {
+      const filtered = getFiltered();
+      const grid = document.getElementById('airportsGrid');
+      document.getElementById('resultsCount').textContent = filtered.length + ' aeropuertos encontrados';
+
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="no-airports"><i class="fa-solid fa-plane-slash" style="font-size:36px;color:#c9d3e0;display:block;margin-bottom:12px"></i><p>No se encontraron aeropuertos.</p></div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(a => `
+        <a class="airport-card" href="index.html?dest=${a.id}">
+          <div class="airport-code">${a.id}</div>
+          <div class="airport-name">${a.name}</div>
+          <div class="airport-city"><i class="fa-solid fa-location-dot" style="color:var(--gold);font-size:11px"></i>${a.city}</div>
+          <div class="airport-country">${a.country}</div>
+        </a>
+      `).join('');
+    }
+
+    document.querySelectorAll('.region-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        currentRegion = this.dataset.region;
+        render();
+      });
+    });
+
+    let searchTimer;
+    document.getElementById('airportSearch').addEventListener('input', function() {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        searchQuery = this.value.trim();
+        // Reset region filter on search
+        if (searchQuery) {
+          currentRegion = 'all';
+          document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+          document.querySelector('[data-region="all"]').classList.add('active');
+        }
+        render();
+      }, 200);
+    });
+
+    render();
+  </script>
+</body>
+</html>

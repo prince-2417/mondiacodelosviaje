@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-$API_KEY = '2e74ec9ba2dfb26c148870f18eb5a6d7c8e637a8130f4d0387a013ad90343818';
+$API_KEY = '5b31b118cad565fcb92cd14c0630d3b159dd04760fb10e6f644adb1670ef4f1b';
 $action = $_GET['action'] ?? '';
 
 function serpFetch($url) {

@@ -56,7 +56,8 @@
     .travel-info-icon { width: 52px; height: 52px; background: var(--navy); color: var(--gold); border-radius: 50%; display: grid; place-items: center; margin-bottom: 16px; font-size: 20px; }
     .travel-info-tag { color: var(--gold); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 0 6px; }
     .travel-info-card h3 { margin: 0 0 8px; font-family: Manrope, sans-serif; font-size: 17px; color: var(--navy); }
-    .travel-info-card p { color: #68758a; font-size: 13px; line-height: 1.6; margin: 0; }
+    .travel-info-card p { color: #68758a; font-size: 13px; line-height: 1.6; margin: 0 0 12px; }
+    .tic-link { display: inline-flex; align-items: center; gap: 6px; color: var(--gold); font-size: 13px; font-weight: 700; margin-top: 4px; }
 
     .inner-page-actions .gold-button,
     .inner-page-actions .primary-button { margin: 0; }
@@ -96,42 +97,48 @@
           <h2 style="letter-spacing:-2px; margin:0; font-family:Manrope,sans-serif; font-size:clamp(32px,4vw,44px);">Todo lo que necesitas saber</h2>
         </div>
         <div class="travel-info-grid">
-          <div class="travel-info-card">
+          <a class="travel-info-card" href="info-viaje.php?topic=equipaje" style="text-decoration:none;display:block;cursor:pointer">
             <div class="travel-info-icon"><i class="fa-solid fa-suitcase"></i></div>
             <p class="travel-info-tag">Equipaje</p>
             <h3>Baggage</h3>
             <p>Allowances, restrictions, and fees explained.</p>
-          </div>
-          <div class="travel-info-card">
+            <span class="tic-link">Ver detalles <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+          <a class="travel-info-card" href="info-viaje.php?topic=asientos" style="text-decoration:none;display:block;cursor:pointer">
             <div class="travel-info-icon"><i class="fa-solid fa-chair"></i></div>
             <p class="travel-info-tag">Seat selection</p>
             <h3>Seat Selection</h3>
             <p>Pick the right spot for your flight.</p>
-          </div>
-          <div class="travel-info-card">
+            <span class="tic-link">Ver detalles <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+          <a class="travel-info-card" href="info-viaje.php?topic=menor" style="text-decoration:none;display:block;cursor:pointer">
             <div class="travel-info-icon"><i class="fa-solid fa-child-reaching"></i></div>
             <p class="travel-info-tag">Unaccompanied minor</p>
             <h3>UNMR</h3>
             <p>Safe travel for unaccompanied minors.</p>
-          </div>
-          <div class="travel-info-card">
+            <span class="tic-link">Ver detalles <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+          <a class="travel-info-card" href="info-viaje.php?topic=cambios" style="text-decoration:none;display:block;cursor:pointer">
             <div class="travel-info-icon"><i class="fa-solid fa-pen-to-square"></i></div>
             <p class="travel-info-tag">Flight changes</p>
             <h3>Flight Changes</h3>
             <p>Simple tweaks to your booking.</p>
-          </div>
-          <div class="travel-info-card">
+            <span class="tic-link">Ver detalles <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+          <a class="travel-info-card" href="info-viaje.php?topic=cancelaciones" style="text-decoration:none;display:block;cursor:pointer">
             <div class="travel-info-icon"><i class="fa-solid fa-ban"></i></div>
             <p class="travel-info-tag">Cancellations</p>
             <h3>Cancellations</h3>
             <p>Flexible options when plans shift.</p>
-          </div>
-          <div class="travel-info-card">
+            <span class="tic-link">Ver detalles <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+          <a class="travel-info-card" href="info-viaje.php?topic=checkin" style="text-decoration:none;display:block;cursor:pointer">
             <div class="travel-info-icon"><i class="fa-solid fa-clipboard-check"></i></div>
             <p class="travel-info-tag">Check-in process</p>
             <h3>Check-in Process</h3>
             <p>An easy check-in for a smooth start.</p>
-          </div>
+            <span class="tic-link">Ver detalles <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
         </div>
       </section>
 

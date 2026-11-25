@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados de Vuelos | Mondiaco de los Viajes</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    .results-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; padding: 32px 0 80px; }
+    .filters-panel { background: #fff; border: 1px solid #dde3e9; border-radius: 6px; padding: 24px; height: fit-content; }
+    .filters-panel h3 { font-family: Manrope,sans-serif; font-size: 15px; margin: 0 0 16px; }
+    .filter-group { margin-bottom: 22px; border-bottom: 1px solid #edf0f3; padding-bottom: 18px; }
+    .filter-group:last-child { border-bottom: 0; margin-bottom: 0; }
+    .filter-group label { font-size: 12px; font-weight: 700; color: #66758a; display: block; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .filter-group input[type=range] { width: 100%; accent-color: var(--gold); }
+    .filter-group .price-val { font-size: 13px; font-weight: 700; color: var(--navy); margin-top: 6px; }
+    .filter-check { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; cursor: pointer; }
+    .filter-check input { accent-color: var(--gold); width: 15px; height: 15px; }
+    .results-main {}
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .results-header h2 { font-family: Manrope,sans-serif; font-size: 20px; margin: 0; }
+    .results-header select { border: 1px solid #dde3e9; border-radius: 4px; padding: 8px 12px; font-size: 13px; color: var(--navy); background: #fff; }
+    .flight-card { background: #fff; border: 1px solid #dde3e9; border-radius: 6px; padding: 20px 24px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; transition: box-shadow .2s; }
+    .flight-card:hover { box-shadow: 0 8px 28px #081b3314; }
+    .flight-card-left { display: flex; align-items: center; gap: 24px; }
+    .flight-airline { display: flex; align-items: center; gap: 10px; min-width: 160px; }
+    .airline-logo { width: 36px; height: 36px; background: #eef2f6; border-radius: 50%; display: grid; place-items: center; font-size: 14px; color: var(--navy); }
+    .airline-name { font-weight: 700; font-size: 13px; color: var(--navy); }
+    .airline-class { font-size: 11px; color: #8490a0; margin-top: 2px; }
+    .flight-times { display: flex; align-items: center; gap: 16px; }
+    .flight-time-block { text-align: center; }
+    .flight-time-block strong { display: block; font-size: 18px; font-family: Manrope,sans-serif; color: var(--navy); }
+    .flight-time-block span { font-size: 11px; color: #8490a0; }
+    .flight-duration { text-align: center; }
+    .flight-duration span { font-size: 11px; color: #8490a0; display: block; }
+    .flight-duration .dur-line { width: 80px; height: 1px; background: #c9d3e0; margin: 6px auto; position: relative; }
+    .flight-duration .dur-line:before, .flight-duration .dur-line:after { content:''; position: absolute; top: -3px; width: 6px; height: 6px; border-radius: 50%; background: #c9d3e0; }
+    .flight-duration .dur-line:before { left: 0; }
+    .flight-duration .dur-line:after { right: 0; }
+    .flight-stops { font-size: 11px; color: #8490a0; text-align: center; margin-top: 4px; }
+    .flight-stops.direct { color: #2e9e6b; font-weight: 700; }
+    .flight-card-right { text-align: right; }
+    .flight-price { font-family: Manrope,sans-serif; font-size: 26px; font-weight: 800; color: var(--navy); }
+    .flight-price small { font-size: 11px; color: #8490a0; display: block; font-weight: 400; font-family: inherit; }
+    .book-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--navy); border: 0; border-radius: 4px; padding: 10px 20px; font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 10px; text-decoration: none; }
+    .book-btn:hover { background: #c9a05a; }
+    .loading-state { text-align: center; padding: 60px 20px; color: #66758a; }
+    .loading-state i { font-size: 32px; color: var(--gold); margin-bottom: 12px; display: block; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .no-results { text-align: center; padding: 60px 20px; }
+    .no-results i { font-size: 40px; color: #c9d3e0; margin-bottom: 16px; display: block; }
+    .search-summary { background: var(--navy); color: #fff; padding: 16px 0; margin-bottom: 0; }
+    .search-summary-inner { width: 89%; max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; font-size: 13px; }
+    .search-summary span { color: #9aa8ba; }
+    .search-summary strong { color: #fff; }
+    .search-summary .edit-search { margin-left: auto; color: var(--gold); font-weight: 700; text-decoration: none; font-size: 13px; }
+    @media (max-width: 900px) {
+      .results-layout { grid-template-columns: 1fr; }
+      .filters-panel { display: none; }
+    }
+    @media (max-width: 760px) {
+      .flight-card { grid-template-columns: 1fr; }
+      .flight-card-right { text-align: left; display: flex; align-items: center; justify-content: space-between; }
+      .flight-card-left { flex-wrap: wrap; gap: 16px; }
+      .flight-times { gap: 10px; }
+      .flight-duration .dur-line { width: 50px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header class="header">
+      <a class="brand" href="/"><img class="brand-mark" src="./public/logo.webp" alt="Mondiaco de los Viajes"></a>
+      <nav class="nav" id="nav">
+        <a href="/">Inicio</a>
+        <div class="nav-dropdown">
+          <a href="/sobre-nosotros" class="dropdown-toggle">Sobre Nosotros <span class="dropdown-arrow">▼</span></a>
+          <div class="dropdown-menu">
+            <a href="/sobre-nosotros">Sobre Nosotros</a>
+            <a href="/información-legal-de-negocios">Información Legal De Negocios</a>
+            <a href="/cómo-reservamos-y-emitimos-billetes-de-avión">Cómo Reservamos y Emitimos Billetes De Avión</a>
+            <a href="/información-sobre-pagos-y-transparencia">Información Sobre pagos y transparencia</a>
+            <a href="/descargo-de-responsabilidad">Descargo de Responsabilidad</a>
+          </div>
+        </div>
+        <a href="/vuelos">Vuelos</a>
+        <a href="/líneas-de-cruceros">Líneas De Cruceros</a>
+        <a href="/contactarnos">Contactarnos</a>
+      </nav>
+      <a class="phone-link" href="tel:18883707045"><span class="phone-icon"><i class="fa-solid fa-phone"></i></span><span class="phone-link-copy"><small>Llámenos Ahora</small><strong>1-888-370-7045</strong></span></a>
+      <button class="menu-button" id="menu">☰</button>
+    </header>
+
+    <div class="search-summary">
+      <div class="search-summary-inner" id="searchSummary">
+        <span>Buscando vuelos...</span>
+        <a class="edit-search" href="/">← Editar búsqueda</a>
+      </div>
+    </div>
+
+    <main>
+      <div class="section results-layout">
+        <aside class="filters-panel">
+          <h3>Filtrar resultados</h3>
+          <div class="filter-group">
+            <label>Precio máximo</label>
+            <input type="range" id="priceFilter" min="0" max="5000" value="5000" step="50">
+            <div class="price-val">Hasta: $<span id="priceVal">5000</span></div>
+          </div>
+          <div class="filter-group">
+            <label>Escalas</label>
+            <label class="filter-check"><input type="checkbox" checked value="0"> Directo</label>
+            <label class="filter-check"><input type="checkbox" checked value="1"> 1 escala</label>
+            <label class="filter-check"><input type="checkbox" checked value="2"> 2+ escalas</label>
+          </div>
+          <div class="filter-group">
+            <label>Aerolínea</label>
+            <div id="airlineFilters"></div>
+          </div>
+        </aside>
+
+        <div class="results-main">
+          <div class="results-header">
+            <h2 id="resultsCount">Buscando vuelos...</h2>
+            <select id="sortSelect">
+              <option value="price">Menor precio</option>
+              <option value="duration">Menor duración</option>
+            </select>
+          </div>
+          <div id="flightsList">
+            <div class="loading-state">
+              <i class="fa-solid fa-circle-notch"></i>
+              <p>Buscando los mejores vuelos para ti...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer" id="contact">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a class="brand brand-light" href="/"><img class="brand-mark" src="public/logo-white.webp" alt="Mondiaco de los Viajes"></a>
+          <p>Descubre ofertas de vuelos económicas, una experiencia de reserva sencilla y asistencia de viaje confiable con Mondiaco de los Viajes.</p>
+          <div class="footer-contact-list">
+            <div><span>Atención telefónica</span><a href="tel:18883707045">1-888-370-7045</a></div>
+            <div><span>Escríbenos</span><a href="mailto:support@mondiacodelosviajes.com">support@mondiacodelosviajes.com</a></div>
+          </div>
+        </div>
+        <div>
+          <h3>ENLACES IMPORTANTES</h3>
+          <div class="footer-links">
+            <a href="/sobre-nosotros">Sobre Nosotros</a>
+            <a href="/vuelos">Vuelos</a>
+            <a href="/contactarnos">Contactarnos</a>
+          </div>
+        </div>
+        <div>
+          <h3>INFORMACIÓN LEGAL</h3>
+          <div class="footer-links">
+            <a href="/términos-y-condiciones">Términos y Condiciones</a>
+            <a href="/política-de-privacidad">Política De Privacidad</a>
+            <a href="/cancelación-y-reembolso">Cancelación y reembolso</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-disclaimer"><p>Copyright © 2026 Mondiacodelosviaje.com.</p></div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('menu').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+    document.querySelectorAll('.dropdown-toggle').forEach(t => t.addEventListener('click', e => { if (window.innerWidth <= 760) { e.preventDefault(); t.parentElement.classList.toggle('open'); } }));
+
+    const params = new URLSearchParams(location.search);
+    const origin = params.get('origin') || '';
+    const dest = params.get('dest') || '';
+    const depart = params.get('depart') || '';
+    const ret = params.get('return') || '';
+    const type = params.get('type') || '1';
+
+    // Summary bar
+    const summary = document.getElementById('searchSummary');
+    summary.innerHTML = `
+      <span>Origen:</span><strong>${origin}</strong>
+      <span>Destino:</span><strong>${dest}</strong>
+      <span>Salida:</span><strong>${depart}</strong>
+      ${ret ? `<span>Regreso:</span><strong>${ret}</strong>` : ''}
+      <span>Tipo:</span><strong>${type == 1 ? 'Ida y vuelta' : 'Solo ida'}</strong>
+      <a class="edit-search" href="/">← Editar búsqueda</a>
+    `;
+
+    let allFlights = [];
+
+    function renderFlights(flights) {
+      const list = document.getElementById('flightsList');
+      if (!flights.length) {
+        list.innerHTML = '<div class="no-results"><i class="fa-solid fa-plane-slash"></i><p>No se encontraron vuelos para esta búsqueda.</p><a class="gold-button" href="/" style="margin:16px auto 0">Nueva búsqueda</a></div>';
+        return;
+      }
+      document.getElementById('resultsCount').textContent = flights.length + ' vuelos encontrados';
+      list.innerHTML = flights.map(f => {
+        const leg = f.flights[0];
+        const stops = f.flights.length - 1;
+        const stopText = stops === 0 ? 'Directo' : stops + ' escala' + (stops > 1 ? 's' : '');
+        const stopClass = stops === 0 ? 'direct' : '';
+        const duration = f.total_duration ? Math.floor(f.total_duration / 60) + 'h ' + (f.total_duration % 60) + 'm' : '';
+        return `
+          <div class="flight-card">
+            <div class="flight-card-left">
+              <div class="flight-airline">
+                <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                <div>
+                  <div class="airline-name">${leg.airline}</div>
+                  <div class="airline-class">${leg.flight_number || ''}</div>
+                </div>
+              </div>
+              <div class="flight-times">
+                <div class="flight-time-block">
+                  <strong>${leg.departure_airport.time ? leg.departure_airport.time.split(' ')[1] || leg.departure_airport.time : '--'}</strong>
+                  <span>${leg.departure_airport.id}</span>
+                </div>
+                <div class="flight-duration">
+                  <span>${duration}</span>
+                  <div class="dur-line"></div>
+                  <div class="flight-stops ${stopClass}">${stopText}</div>
+                </div>
+                <div class="flight-time-block">
+                  <strong>${leg.arrival_airport.time ? leg.arrival_airport.time.split(' ')[1] || leg.arrival_airport.time : '--'}</strong>
+                  <span>${leg.arrival_airport.id}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flight-card-right">
+              <div class="flight-price">$${f.price}<small>por persona</small></div>
+              <a class="book-btn" href="tel:18883707045"><i class="fa-solid fa-phone"></i> Reservar</a>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function applyFilters() {
+      const maxPrice = parseInt(document.getElementById('priceFilter').value);
+      const checkedStops = [...document.querySelectorAll('.filter-group input[type=checkbox]:checked')].map(c => parseInt(c.value));
+      const sort = document.getElementById('sortSelect').value;
+      let filtered = allFlights.filter(f => {
+        const stops = f.flights.length - 1;
+        const stopVal = stops >= 2 ? 2 : stops;
+        return f.price <= maxPrice && checkedStops.includes(stopVal);
+      });
+      if (sort === 'price') filtered.sort((a, b) => a.price - b.price);
+      else if (sort === 'duration') filtered.sort((a, b) => (a.total_duration || 0) - (b.total_duration || 0));
+      renderFlights(filtered);
+    }
+
+    // Fetch flights
+    let url = `flight-proxy.php?action=search&origin=${encodeURIComponent(origin)}&dest=${encodeURIComponent(dest)}&depart=${encodeURIComponent(depart)}&type=${type}`;
+    if (type == 1 && ret) url += `&return=${encodeURIComponent(ret)}`;
+
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        allFlights = [...(data.best_flights || []), ...(data.other_flights || [])];
+        // Airline filters
+        const airlines = [...new Set(allFlights.map(f => f.flights[0].airline))];
+        document.getElementById('airlineFilters').innerHTML = airlines.map(a =>
+          `<label class="filter-check"><input type="checkbox" checked value="${a}"> ${a}</label>`
+        ).join('');
+        // Max price
+        const maxP = Math.max(...allFlights.map(f => f.price), 5000);
+        document.getElementById('priceFilter').max = maxP;
+        document.getElementById('priceFilter').value = maxP;
+        document.getElementById('priceVal').textContent = maxP;
+        applyFilters();
+      })
+      .catch(() => {
+        document.getElementById('flightsList').innerHTML = '<div class="no-results"><i class="fa-solid fa-triangle-exclamation"></i><p>Error al cargar vuelos. Intenta de nuevo.</p></div>';
+        document.getElementById('resultsCount').textContent = 'Error';
+      });
+
+    document.getElementById('priceFilter').addEventListener('input', function() {
+      document.getElementById('priceVal').textContent = this.value;
+      applyFilters();
+    });
+    document.querySelectorAll('.filter-group input[type=checkbox]').forEach(c => c.addEventListener('change', applyFilters));
+    document.getElementById('sortSelect').addEventListener('change', applyFilters);
+  </script>
+</body>
+</html>

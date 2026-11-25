@@ -46,22 +46,52 @@
               viajar.</p>
 
           </div>
-          <form class="search-card">
-            <div class="trip-tabs"><button type="button" class="active">Ida y vuelta</button><button type="button">Solo
-                ida</button></div>
-            <div class="search-fields">
-              <label class="field"><span class="field-icon">●</span><span><small>Origen</small><strong>Nueva
-                    York</strong></span></label>
-              <label class="field"><span class="field-icon">●</span><span><small>¿A dónde
-                    vas?</small><strong>Destino</strong></span></label>
-              <label class="field"><span class="field-icon">▣</span><span><small>Salida</small><strong>12
-                    Nov</strong></span></label>
-              <label class="field"><span class="field-icon">▣</span><span><small>Regreso</small><strong>30
-                    Nov</strong></span></label>
-              <label class="field travelers"><span class="field-icon">♟</span><span><small>Pasajeros</small><strong>2
-                    viajeros</strong></span><b>⌄</b></label>
-              <button class="search-button" type="button" onclick="this.closest('form').dispatchEvent(new Event('submit'))">&#128269; &nbsp; Buscar vuelos</button>
+          <form class="search-card" id="searchForm">
+            <div class="trip-tabs">
+              <button type="button" class="active" data-type="1">Ida y vuelta</button>
+              <button type="button" data-type="2">Solo ida</button>
             </div>
+            <div class="search-fields">
+              <label class="field">
+                <span class="field-icon"><i class="fa-solid fa-plane-departure"></i></span>
+                <span>
+                  <small>Origen</small>
+                  <input type="text" id="originInput" placeholder="Nueva York" autocomplete="off">
+                  <input type="hidden" id="originCode">
+                  <div class="airport-dropdown" id="originDropdown"></div>
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-icon"><i class="fa-solid fa-plane-arrival"></i></span>
+                <span>
+                  <small>¿A dónde vas?</small>
+                  <input type="text" id="destInput" placeholder="Destino" autocomplete="off">
+                  <input type="hidden" id="destCode">
+                  <div class="airport-dropdown" id="destDropdown"></div>
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-icon"><i class="fa-regular fa-calendar"></i></span>
+                <span>
+                  <small>Salida</small>
+                  <input type="date" id="departDate">
+                </span>
+              </label>
+              <label class="field" id="returnField">
+                <span class="field-icon"><i class="fa-regular fa-calendar"></i></span>
+                <span>
+                  <small>Regreso</small>
+                  <input type="date" id="returnDate">
+                </span>
+              </label>
+              <label class="field travelers">
+                <span class="field-icon"><i class="fa-solid fa-user"></i></span>
+                <span><small>Pasajeros</small><strong>1 viajero</strong></span>
+                <b>⌄</b>
+              </label>
+              <button class="search-button" type="submit"><i class="fa-solid fa-magnifying-glass"></i> &nbsp; Buscar vuelos</button>
+            </div>
+            <div id="flightResults" class="flight-results"></div>
           </form>
         </div>
       </section>
@@ -361,14 +391,159 @@
   </div>
   <script>
     document.getElementById('menu').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
-    document.querySelectorAll('.trip-tabs button').forEach(function(button) {
-      button.addEventListener('click', function() {
-        document.querySelectorAll('.trip-tabs button').forEach(function(tab) { tab.classList.remove('active'); });
+
+    // Trip tabs
+    let tripType = 1;
+    document.querySelectorAll('.trip-tabs button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.trip-tabs button').forEach(t => t.classList.remove('active'));
         this.classList.add('active');
+        tripType = parseInt(this.dataset.type);
+        document.getElementById('returnField').style.display = tripType === 1 ? '' : 'none';
       });
     });
+
+    const cityCodeMap = {
+      'New York': 'NYC',
+      'Los Angeles': 'LAX',
+      'Chicago': 'CHI',
+      'Dallas': 'DFW',
+      'Denver': 'DEN',
+      'San Francisco': 'SFO',
+      'Seattle': 'SEA',
+      'Miami': 'MIA',
+      'Boston': 'BOS',
+      'Las Vegas': 'LAS',
+      'Phoenix': 'PHX',
+      'Houston': 'HOU',
+      'Washington': 'WAS',
+      'London': 'LON',
+      'Paris': 'PAR',
+      'Rome': 'ROM',
+      'Madrid': 'MAD',
+      'Barcelona': 'BCN',
+      'Tokyo': 'TYO',
+      'Beijing': 'BJS',
+      'Shanghai': 'SHA',
+      'Toronto': 'YTO',
+      'Montreal': 'YMQ',
+      'Mexico City': 'MEX',
+      'Sao Paulo': 'SAO',
+      'Buenos Aires': 'BUE',
+      'Sydney': 'SYD',
+      'Melbourne': 'MEL',
+      'Dubai': 'DXB'
+    };
+
+    // Airport autocomplete
+    function setupAirport(inputId, dropdownId, codeId) {
+      const input = document.getElementById(inputId);
+      const dropdown = document.getElementById(dropdownId);
+      const code = document.getElementById(codeId);
+      let timer;
+      let activeIndex = -1;
+      dropdown.setAttribute('role', 'listbox');
+      input.setAttribute('role', 'combobox');
+      input.setAttribute('aria-autocomplete', 'list');
+      input.setAttribute('aria-expanded', 'false');
+
+      function closeDropdown() {
+        dropdown.style.display = 'none';
+        input.setAttribute('aria-expanded', 'false');
+        activeIndex = -1;
+      }
+
+      function showResults(data) {
+        dropdown.innerHTML = '';
+        activeIndex = -1;
+        if (!data.length) {
+          closeDropdown();
+          return;
+        }
+        data.slice(0, 8).forEach((a, index) => {
+          const div = document.createElement('div');
+          div.setAttribute('role', 'option');
+          div.dataset.index = index;
+          const codeText = document.createElement('span');
+          codeText.className = 'airport-code';
+          codeText.textContent = a.id;
+          const detailText = document.createElement('span');
+          detailText.className = 'airport-detail';
+          const nameText = document.createElement('span');
+          nameText.className = 'airport-name';
+          nameText.textContent = a.name || '';
+          const cityCode = cityCodeMap[a.city] || a.city || '';
+          const cityText = document.createElement('span');
+          cityText.className = 'airport-city';
+          cityText.textContent = cityCode ? '(' + cityCode + ')' : '';
+          detailText.append(nameText, cityText);
+          div.append(codeText, detailText);
+          div.addEventListener('mousedown', event => event.preventDefault());
+          div.addEventListener('click', () => selectAirport(a));
+          dropdown.appendChild(div);
+        });
+        dropdown.style.display = 'block';
+        input.setAttribute('aria-expanded', 'true');
+      }
+
+      function selectAirport(a) {
+        input.value = a.city ? a.city + ' (' + a.id + ')' : a.name + ' (' + a.id + ')';
+        code.value = a.id;
+        closeDropdown();
+      }
+
+      input.addEventListener('input', function() {
+        clearTimeout(timer);
+        const q = this.value.trim();
+        code.value = '';
+        if (q.length < 2) { dropdown.innerHTML = ''; closeDropdown(); return; }
+        timer = setTimeout(() => {
+          fetch('flight-proxy.php?action=airports&q=' + encodeURIComponent(q))
+            .then(r => r.json())
+            .then(showResults)
+            .catch(closeDropdown);
+        }, 300);
+      });
+
+      input.addEventListener('keydown', event => {
+        const options = [...dropdown.querySelectorAll('[role="option"]')];
+        if (!options.length) return;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          activeIndex = event.key === 'ArrowDown'
+            ? (activeIndex + 1) % options.length
+            : (activeIndex - 1 + options.length) % options.length;
+          options.forEach((option, index) => option.classList.toggle('active', index === activeIndex));
+          options[activeIndex].scrollIntoView({ block: 'nearest' });
+        } else if (event.key === 'Enter' && activeIndex >= 0) {
+          event.preventDefault();
+          options[activeIndex].click();
+        } else if (event.key === 'Escape') {
+          closeDropdown();
+        }
+      });
+
+      document.addEventListener('click', event => {
+        if (!input.contains(event.target) && !dropdown.contains(event.target)) closeDropdown();
+      });
+    }
+    setupAirport('originInput', 'originDropdown', 'originCode');
+    setupAirport('destInput', 'destDropdown', 'destCode');
+
+    // Flight search
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const origin = document.getElementById('originCode').value || document.getElementById('originInput').value;
+      const dest = document.getElementById('destCode').value || document.getElementById('destInput').value;
+      const depart = document.getElementById('departDate').value;
+      const ret = document.getElementById('returnDate').value;
+      if (!origin || !dest || !depart) { alert('Por favor completa origen, destino y fecha de salida.'); return; }
+      let url = 'resultados-vuelos.html?origin=' + encodeURIComponent(origin) + '&dest=' + encodeURIComponent(dest) + '&depart=' + depart + '&type=' + tripType;
+      if (tripType === 1 && ret) url += '&return=' + ret;
+      window.location.href = url;
+    });
+
     document.querySelectorAll('.faq-item > button').forEach(button => button.addEventListener('click', () => button.parentElement.classList.toggle('open')));
-    document.querySelector('.search-card').addEventListener('submit', event => event.preventDefault());
     document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
       toggle.addEventListener('click', event => {
         if (window.innerWidth <= 760) {
@@ -379,5 +554,4 @@
     });
   </script>
 </body>
-
 </html>

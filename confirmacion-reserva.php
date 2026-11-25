@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,130 +9,499 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <style>
     .confirm-hero {
-      background: linear-gradient(90deg,#081b33f0 0%,#081b33b0 60%,#081b3340 100%), url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=85) 50% 55%/cover no-repeat;
-      padding: 48px 0; color: #fff;
+      background: linear-gradient(90deg, #081b33f0 0%, #081b33b0 60%, #081b3340 100%), url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1800&q=85) 50% 55%/cover no-repeat;
+      padding: 48px 0;
+      color: #fff;
     }
-    .confirm-hero-inner { width: 89%; max-width: 1280px; margin: 0 auto; }
-    .confirm-hero-inner h1 { font-family: Manrope,sans-serif; font-size: clamp(28px,3vw,42px); margin: 0 0 8px; letter-spacing: -1px; }
-    .confirm-hero-inner p { color: #c9d3e0; font-size: 14px; margin: 0; }
 
-    .booking-steps { background: #fff; border-bottom: 1px solid #edf0f3; }
-    .booking-steps-inner { width: 89%; max-width: 1280px; margin: 0 auto; display: flex; }
-    .booking-step { display: flex; align-items: center; gap: 10px; padding: 18px 28px 18px 0; font-size: 13px; font-weight: 700; color: #9aa8ba; border-bottom: 3px solid transparent; }
-    .booking-step.active { color: var(--navy); border-bottom-color: var(--gold); }
-    .booking-step.done { color: #2e9e6b; }
-    .step-num { width: 26px; height: 26px; border-radius: 50%; background: #eef2f6; display: grid; place-items: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
-    .booking-step.active .step-num { background: var(--gold); color: var(--navy); }
-    .booking-step.done .step-num { background: #2e9e6b; color: #fff; }
+    .confirm-hero-inner {
+      width: 89%;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
 
-    .confirm-layout { padding: 48px 0 80px; }
+    .confirm-hero-inner h1 {
+      font-family: Manrope, sans-serif;
+      font-size: clamp(28px, 3vw, 42px);
+      margin: 0 0 8px;
+      letter-spacing: -1px;
+    }
+
+    .confirm-hero-inner p {
+      color: #c9d3e0;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .booking-steps {
+      background: #fff;
+      border-bottom: 1px solid #edf0f3;
+    }
+
+    .booking-steps-inner {
+      width: 89%;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+    }
+
+    .booking-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 28px 18px 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: #9aa8ba;
+      border-bottom: 3px solid transparent;
+    }
+
+    .booking-step.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+    }
+
+    .booking-step.done {
+      color: #2e9e6b;
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #eef2f6;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .booking-step.active .step-num {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .booking-step.done .step-num {
+      background: #2e9e6b;
+      color: #fff;
+    }
+
+    .confirm-layout {
+      padding: 48px 0 80px;
+    }
 
     /* Success banner */
     .success-banner {
       background: linear-gradient(135deg, #1a7a4a 0%, #2e9e6b 100%);
-      border-radius: 8px; padding: 36px 40px; color: #fff;
-      display: flex; align-items: center; gap: 28px; margin-bottom: 28px;
+      border-radius: 8px;
+      padding: 36px 40px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-bottom: 28px;
     }
-    .success-icon { width: 72px; height: 72px; background: rgba(255,255,255,.2); border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; }
-    .success-icon i { font-size: 32px; }
-    .success-text h2 { font-family: Manrope,sans-serif; font-size: clamp(22px,3vw,30px); margin: 0 0 8px; }
-    .success-text p { margin: 0; opacity: .9; font-size: 14px; line-height: 1.6; }
-    .booking-ref { background: rgba(255,255,255,.15); border-radius: 4px; padding: 8px 16px; display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 13px; }
-    .booking-ref strong { font-family: Manrope,sans-serif; font-size: 18px; letter-spacing: 2px; }
 
-    .confirm-grid { display: grid; grid-template-columns: 1fr 360px; gap: 28px; }
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      background: rgba(255, 255, 255, .2);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .success-icon i {
+      font-size: 32px;
+    }
+
+    .success-text h2 {
+      font-family: Manrope, sans-serif;
+      font-size: clamp(22px, 3vw, 30px);
+      margin: 0 0 8px;
+    }
+
+    .success-text p {
+      margin: 0;
+      opacity: .9;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .booking-ref {
+      background: rgba(255, 255, 255, .15);
+      border-radius: 4px;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+      font-size: 13px;
+    }
+
+    .booking-ref strong {
+      font-family: Manrope, sans-serif;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .confirm-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 28px;
+    }
 
     /* Detail cards */
-    .detail-card { background: #fff; border: 1px solid #dde3e9; border-radius: 6px; padding: 28px; margin-bottom: 20px; }
-    .detail-card h3 { font-family: Manrope,sans-serif; font-size: 15px; margin: 0 0 20px; padding-bottom: 14px; border-bottom: 1px solid #edf0f3; display: flex; align-items: center; gap: 10px; }
-    .detail-card h3 i { color: var(--gold); }
+    .detail-card {
+      background: #fff;
+      border: 1px solid #dde3e9;
+      border-radius: 6px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
 
-    .flight-confirm-route { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; }
-    .fca { text-align: center; }
-    .fca strong { display: block; font-family: Manrope,sans-serif; font-size: 28px; color: var(--navy); }
-    .fca span { font-size: 12px; color: #8490a0; }
-    .fc-line { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-    .fc-line .fc-dur { font-size: 12px; color: #8490a0; }
-    .fc-line .fc-bar { width: 100%; height: 1px; background: #c9d3e0; position: relative; }
-    .fc-line .fc-bar:before,.fc-line .fc-bar:after { content:''; position: absolute; top: -3px; width: 6px; height: 6px; border-radius: 50%; background: #c9d3e0; }
-    .fc-line .fc-bar:before { left: 0; }
-    .fc-line .fc-bar:after { right: 0; }
-    .fc-line .fc-plane { color: var(--gold); font-size: 16px; }
-    .fc-line .fc-stops { font-size: 11px; color: #8490a0; }
+    .detail-card h3 {
+      font-family: Manrope, sans-serif;
+      font-size: 15px;
+      margin: 0 0 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #edf0f3;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-    .detail-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .detail-row { display: flex; flex-direction: column; gap: 4px; }
-    .detail-row small { font-size: 10px; color: #8490a0; text-transform: uppercase; letter-spacing: 1px; }
-    .detail-row strong { font-size: 14px; color: var(--navy); }
+    .detail-card h3 i {
+      color: var(--gold);
+    }
 
-    .pax-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid #edf0f3; }
-    .pax-row:last-child { border-bottom: 0; }
-    .pax-avatar { width: 42px; height: 42px; background: #eef2f6; border-radius: 50%; display: grid; place-items: center; color: var(--navy); flex-shrink: 0; }
-    .pax-info strong { display: block; font-size: 14px; color: var(--navy); }
-    .pax-info span { font-size: 12px; color: #8490a0; }
+    .flight-confirm-route {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .fca {
+      text-align: center;
+    }
+
+    .fca strong {
+      display: block;
+      font-family: Manrope, sans-serif;
+      font-size: 28px;
+      color: var(--navy);
+    }
+
+    .fca span {
+      font-size: 12px;
+      color: #8490a0;
+    }
+
+    .fc-line {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .fc-line .fc-dur {
+      font-size: 12px;
+      color: #8490a0;
+    }
+
+    .fc-line .fc-bar {
+      width: 100%;
+      height: 1px;
+      background: #c9d3e0;
+      position: relative;
+    }
+
+    .fc-line .fc-bar:before,
+    .fc-line .fc-bar:after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #c9d3e0;
+    }
+
+    .fc-line .fc-bar:before {
+      left: 0;
+    }
+
+    .fc-line .fc-bar:after {
+      right: 0;
+    }
+
+    .fc-line .fc-plane {
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    .fc-line .fc-stops {
+      font-size: 11px;
+      color: #8490a0;
+    }
+
+    .detail-rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .detail-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .detail-row small {
+      font-size: 10px;
+      color: #8490a0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .detail-row strong {
+      font-size: 14px;
+      color: var(--navy);
+    }
+
+    .pax-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid #edf0f3;
+    }
+
+    .pax-row:last-child {
+      border-bottom: 0;
+    }
+
+    .pax-avatar {
+      width: 42px;
+      height: 42px;
+      background: #eef2f6;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+
+    .pax-info strong {
+      display: block;
+      font-size: 14px;
+      color: var(--navy);
+    }
+
+    .pax-info span {
+      font-size: 12px;
+      color: #8490a0;
+    }
 
     /* Price summary sidebar */
-    .price-card { background: #fff; border: 1px solid #dde3e9; border-radius: 6px; padding: 24px; position: sticky; top: 20px; }
-    .price-card h3 { font-family: Manrope,sans-serif; font-size: 15px; margin: 0 0 18px; padding-bottom: 14px; border-bottom: 1px solid #edf0f3; }
-    .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; }
-    .price-row span { color: #66758a; }
-    .price-row strong { color: var(--navy); }
-    .price-total { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 2px solid #edf0f3; margin-top: 4px; }
-    .price-total span { font-weight: 700; font-size: 14px; }
-    .price-total strong { font-family: Manrope,sans-serif; font-size: 26px; color: var(--navy); }
+    .price-card {
+      background: #fff;
+      border: 1px solid #dde3e9;
+      border-radius: 6px;
+      padding: 24px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .price-card h3 {
+      font-family: Manrope, sans-serif;
+      font-size: 15px;
+      margin: 0 0 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #edf0f3;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .price-row span {
+      color: #66758a;
+    }
+
+    .price-row strong {
+      color: var(--navy);
+    }
+
+    .price-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 2px solid #edf0f3;
+      margin-top: 4px;
+    }
+
+    .price-total span {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .price-total strong {
+      font-family: Manrope, sans-serif;
+      font-size: 26px;
+      color: var(--navy);
+    }
 
     /* Next steps */
-    .next-steps { background: #fff; border: 1px solid #dde3e9; border-radius: 6px; padding: 24px; margin-top: 0; }
-    .next-steps h3 { font-family: Manrope,sans-serif; font-size: 15px; margin: 0 0 18px; }
-    .next-step-item { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
-    .next-step-item:last-child { margin-bottom: 0; }
-    .ns-icon { width: 38px; height: 38px; background: #eef2f6; border-radius: 50%; display: grid; place-items: center; color: var(--navy); flex-shrink: 0; font-size: 14px; }
-    .ns-text strong { display: block; font-size: 13px; color: var(--navy); margin-bottom: 3px; }
-    .ns-text span { font-size: 12px; color: #8490a0; line-height: 1.5; }
+    .next-steps {
+      background: #fff;
+      border: 1px solid #dde3e9;
+      border-radius: 6px;
+      padding: 24px;
+      margin-top: 0;
+    }
 
-    .action-btns { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: #fff; border-radius: 4px; padding: 12px 22px; font-size: 13px; font-weight: 800; text-decoration: none; border: 0; cursor: pointer; }
-    .btn-primary:hover { background: #102d50; }
-    .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--navy); border: 1px solid #dde3e9; border-radius: 4px; padding: 12px 22px; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; }
-    .btn-outline:hover { border-color: var(--gold); }
+    .next-steps h3 {
+      font-family: Manrope, sans-serif;
+      font-size: 15px;
+      margin: 0 0 18px;
+    }
+
+    .next-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .next-step-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .ns-icon {
+      width: 38px;
+      height: 38px;
+      background: #eef2f6;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--navy);
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    .ns-text strong {
+      display: block;
+      font-size: 13px;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+
+    .ns-text span {
+      font-size: 12px;
+      color: #8490a0;
+      line-height: 1.5;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 4px;
+      padding: 12px 22px;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #102d50;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid #dde3e9;
+      border-radius: 4px;
+      padding: 12px 22px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+    }
 
     @media (max-width: 900px) {
-      .confirm-grid { grid-template-columns: 1fr; }
-      .price-card { position: static; }
+      .confirm-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .price-card {
+        position: static;
+      }
     }
+
     @media (max-width: 760px) {
-      .success-banner { flex-direction: column; text-align: center; padding: 28px 20px; }
-      .booking-steps-inner { overflow-x: auto; }
-      .booking-step { padding: 14px 16px 14px 0; white-space: nowrap; font-size: 12px; }
-      .detail-rows { grid-template-columns: 1fr; }
-      .flight-confirm-route { gap: 12px; }
-      .fca strong { font-size: 22px; }
+      .success-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 20px;
+      }
+
+      .booking-steps-inner {
+        overflow-x: auto;
+      }
+
+      .booking-step {
+        padding: 14px 16px 14px 0;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+
+      .detail-rows {
+        grid-template-columns: 1fr;
+      }
+
+      .flight-confirm-route {
+        gap: 12px;
+      }
+
+      .fca strong {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="site">
-    <header class="header">
-      <a class="brand" href="/"><img class="brand-mark" src="./public/logo.webp" alt="Mondiaco de los Viajes"></a>
-      <nav class="nav" id="nav">
-        <a href="/">Inicio</a>
-        <div class="nav-dropdown">
-          <a href="/sobre-nosotros" class="dropdown-toggle">Sobre Nosotros <span class="dropdown-arrow">▼</span></a>
-          <div class="dropdown-menu">
-            <a href="/sobre-nosotros">Sobre Nosotros</a>
-            <a href="/información-legal-de-negocios">Información Legal De Negocios</a>
-            <a href="/cómo-reservamos-y-emitimos-billetes-de-avión">Cómo Reservamos y Emitimos Billetes De Avión</a>
-            <a href="/información-sobre-pagos-y-transparencia">Información Sobre pagos y transparencia</a>
-            <a href="/descargo-de-responsabilidad">Descargo de Responsabilidad</a>
-          </div>
-        </div>
-        <a href="/vuelos">Vuelos</a>
-        <a href="/líneas-de-cruceros">Líneas De Cruceros</a>
-        <a href="/contactarnos">Contactarnos</a>
-      </nav>
-      <a class="phone-link" href="tel:18883707045"><span class="phone-icon"><i class="fa-solid fa-phone"></i></span><span class="phone-link-copy"><small>Llámenos Ahora</small><strong>1-888-370-7045</strong></span></a>
-      <button class="menu-button" id="menu">☰</button>
-    </header>
+    <?php include('include/header.php'); ?>
 
     <div class="confirm-hero">
       <div class="confirm-hero-inner">
@@ -286,26 +656,17 @@
       </div>
     </main>
 
-    <footer class="footer">
-      <div class="footer-main">
-        <div class="footer-brand">
-          <a class="brand brand-light" href="/"><img class="brand-mark" src="public/logo-white.webp" alt="Mondiaco de los Viajes"></a>
-          <p>Descubre ofertas de vuelos económicas, una experiencia de reserva sencilla y asistencia de viaje confiable con Mondiaco de los Viajes.</p>
-          <div class="footer-contact-list">
-            <div><span>Atención telefónica</span><a href="tel:18883707045">1-888-370-7045</a></div>
-            <div><span>Escríbenos</span><a href="mailto:support@mondiacodelosviajes.com">support@mondiacodelosviajes.com</a></div>
-          </div>
-        </div>
-        <div><h3>ENLACES IMPORTANTES</h3><div class="footer-links"><a href="/sobre-nosotros">Sobre Nosotros</a><a href="/vuelos">Vuelos</a><a href="/contactarnos">Contactarnos</a></div></div>
-        <div><h3>INFORMACIÓN LEGAL</h3><div class="footer-links"><a href="/términos-y-condiciones">Términos y Condiciones</a><a href="/política-de-privacidad">Política De Privacidad</a><a href="/cancelación-y-reembolso">Cancelación y reembolso</a></div></div>
-      </div>
-      <div class="footer-disclaimer"><p>Copyright © 2026 Mondiacodelosviaje.com.</p></div>
-    </footer>
+    <?php include('include/footer.php'); ?>
   </div>
 
   <script>
     document.getElementById('menu').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
-    document.querySelectorAll('.dropdown-toggle').forEach(t => t.addEventListener('click', e => { if (window.innerWidth <= 760) { e.preventDefault(); t.parentElement.classList.toggle('open'); } }));
+    document.querySelectorAll('.dropdown-toggle').forEach(t => t.addEventListener('click', e => {
+      if (window.innerWidth <= 760) {
+        e.preventDefault();
+        t.parentElement.classList.toggle('open');
+      }
+    }));
 
     const params = new URLSearchParams(location.search);
     const origin = params.get('origin') || '';
@@ -335,8 +696,11 @@
     document.getElementById('fcFlight').textContent = flight || '--';
     document.getElementById('fcDepart').textContent = depart;
     document.getElementById('fcType').textContent = type == 1 ? 'Ida y vuelta' : 'Solo ida';
-    if (ret) { document.getElementById('fcReturn').textContent = ret; }
-    else { document.getElementById('fcReturnWrap').style.display = 'none'; }
+    if (ret) {
+      document.getElementById('fcReturn').textContent = ret;
+    } else {
+      document.getElementById('fcReturnWrap').style.display = 'none';
+    }
 
     // Passenger
     const pax = JSON.parse(sessionStorage.getItem('pax') || '{}');
@@ -351,4 +715,5 @@
     document.getElementById('priceTotal').textContent = '$' + (total || price + tax + 35).toFixed(2);
   </script>
 </body>
+
 </html>

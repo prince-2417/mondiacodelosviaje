@@ -1,5 +1,6 @@
 ﻿<!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,29 +8,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
   <div class="site">
-    <header class="header">
-      <a class="brand" href="/"><img class="brand-mark" src="/public/logo.webp" alt="Mondiaco de los Viajes"></a>
-      <nav class="nav" id="nav">
-        <a href="/">Inicio</a>
-        <div class="nav-dropdown">
-          <a href="/sobre-nosotros" class="dropdown-toggle">Sobre Nosotros <span class="dropdown-arrow"><i class="fa-solid fa-chevron-down"></i></span></a>
-          <div class="dropdown-menu">
-            <a href="/sobre-nosotros">Sobre Nosotros</a>
-            <a href="/informaciÃ³n-legal-de-negocios">InformaciÃ³n Legal De Negocios</a>
-            <a href="/cÃ³mo-reservamos-y-emitimos-billetes-de-aviÃ³n">CÃ³mo Reservamos y Emitimos Billetes De AviÃ³n</a>
-            <a href="/informaciÃ³n-sobre-pagos-y-transparencia">InformaciÃ³n Sobre pagos y transparencia</a>
-            <a href="/descargo-de-responsabilidad">Descargo de Responsabilidad</a>
-          </div>
-        </div>
-        <a href="/vuelos">Vuelos</a>
-        <a href="/lÃ­neas-de-cruceros">LÃ­neas De Cruceros</a>
-        <a href="/contactarnos">Contactarnos</a>
-      </nav>
-      <a class="phone-link" href="tel:18883707045" aria-label="Llamar al 1-888-370-7045"><span class="phone-icon"><i class="fa-solid fa-phone"></i></span><span class="phone-link-copy"><small>Llámenos Ahora</small><strong>1-888-370-7045</strong></span></a>
-      <button class="menu-button" id="menu" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
-    </header>
+    <?php include('include/header.php'); ?>
 
     <main>
       <section class="inner-page-hero">
@@ -66,7 +48,14 @@
             </label>
             <label class="flight-field passengers-field">
               <span class="flight-field-icon" aria-hidden="true"><i class="fa-solid fa-user-group"></i></span>
-              <span class="flight-field-copy"><small>Pasajeros</small><select name="passengers" aria-label="NÃºmero de pasajeros"><option value="1">1 viajero</option><option value="2" selected>2 viajeros</option><option value="3">3 viajeros</option><option value="4">4 viajeros</option><option value="5">5 viajeros</option><option value="6">6 viajeros</option></select></span>
+              <span class="flight-field-copy"><small>Pasajeros</small><select name="passengers" aria-label="NÃºmero de pasajeros">
+                  <option value="1">1 viajero</option>
+                  <option value="2" selected>2 viajeros</option>
+                  <option value="3">3 viajeros</option>
+                  <option value="4">4 viajeros</option>
+                  <option value="5">5 viajeros</option>
+                  <option value="6">6 viajeros</option>
+                </select></span>
             </label>
             <button class="flight-search-button" type="submit" aria-label="Buscar vuelos"><i class="fa-solid fa-magnifying-glass"></i> <span>Buscar vuelos</span></button>
           </form>
@@ -90,28 +79,31 @@
       </section>
 
       <section class="section inner-page-details">
-        <article><h2>Buscar Vuelos</h2><p>Compare aerolÃ­neas, horarios y tarifas para encontrar la opciÃ³n ideal.</p></article>
-        <article><h2>Seleccionar el Vuelo</h2><p>Elija el vuelo que mejor se adapte a sus necesidades y revise el itinerario.</p></article>
-        <article><h2>Recibir ConfirmaciÃ³n</h2><p>Reciba su confirmaciÃ³n y boleto electrÃ³nico por correo electrÃ³nico de forma segura.</p></article>
+        <article>
+          <h2>Buscar Vuelos</h2>
+          <p>Compare aerolÃ­neas, horarios y tarifas para encontrar la opciÃ³n ideal.</p>
+        </article>
+        <article>
+          <h2>Seleccionar el Vuelo</h2>
+          <p>Elija el vuelo que mejor se adapte a sus necesidades y revise el itinerario.</p>
+        </article>
+        <article>
+          <h2>Recibir ConfirmaciÃ³n</h2>
+          <p>Reciba su confirmaciÃ³n y boleto electrÃ³nico por correo electrÃ³nico de forma segura.</p>
+        </article>
       </section>
-      <section class="page-contact-band"><div><p class="section-kicker">RESERVE SU PRÃ“XIMO VUELO</p><h2>No espere mÃ¡s. Encuentre hoy las mejores ofertas.</h2></div><a href="tel:18883707045">Llamar 1-888-370-7045</a></section>
+      <section class="page-contact-band">
+        <div>
+          <p class="section-kicker">RESERVE SU PRÃ“XIMO VUELO</p>
+          <h2>No espere mÃ¡s. Encuentre hoy las mejores ofertas.</h2>
+        </div><a href="tel:18883707045">Llamar 1-888-370-7045</a>
+      </section>
     </main>
 
-    <footer class="footer" id="contact">
-      <div class="footer-main">
-        <div class="footer-brand">
-          <a class="brand brand-light" href="/"><img class="brand-mark" src="/public/logo.webp" alt="Mondiaco de los Viajes"></a>
-          <p>Descubre ofertas de vuelos econÃ³micas, una experiencia de reserva sencilla y asistencia de viaje confiable con Mondiaco de los Viajes.</p>
-          <div class="footer-contact-list"><div><span>AtenciÃ³n telefÃ³nica</span><a href="tel:18883707045">1-888-370-7045</a></div><div><span>EscrÃ­benos</span><a href="mailto:support@mondiacodelosviajes.com">support@mondiacodelosviajes.com</a></div></div>
-        </div>
-        <div><h3>ENLACES IMPORTANTES</h3><div class="footer-links"><a href="/sobre-nosotros">Sobre Nosotros</a><a href="/lÃ­neas-de-cruceros">LÃ­neas De Cruceros</a><a href="/informaciÃ³n-legal-de-negocios.html">InformaciÃ³n Legal De Negocios</a><a href="/contactarnos">Contactarnos</a></div></div>
-        <div><h3>INFORMACIÃ“N LEGAL</h3><div class="footer-links"><a href="/tÃ©rminos-y-condiciones.html">TÃ©rminos y Condiciones</a><a href="/polÃ­tica-de-privacidad.html">PolÃ­tica De Privacidad</a><a href="/tarifas-de-servicio.html">Tarifas de Servicios</a><a href="/cancelaciÃ³n-y-reembolso.html">CancelaciÃ³n y reembolso</a></div></div>
-      </div>
-      <div class="footer-payment"><div class="payment-list"><img src="https://mondiacodelosviaje.com/image/footer/visa.png" alt="Visa"><img src="https://mondiacodelosviaje.com/image/footer/master-card.png" alt="Mastercard"><img src="https://mondiacodelosviaje.com/image/footer/paypal.png" alt="PayPal"></div></div>
-      <div class="footer-disclaimer"><p>Copyright Â© 2026 Mondiacodelosviaje.com.</p></div>
-    </footer>
+    <?php include('include/footer.php'); ?>
   </div>
-  <script>const menuButton = document.getElementById('menu');
+  <script>
+    const menuButton = document.getElementById('menu');
     if (menuButton) {
       menuButton.addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
     }
@@ -143,4 +135,5 @@
     document.querySelectorAll('form').forEach(form => form.addEventListener('submit', event => event.preventDefault()));
   </script>
 </body>
+
 </html>
